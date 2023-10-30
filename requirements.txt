@@ -2,4 +2,4 @@ openai
 streamlit
 requests
 bs4
-docx
+python-docx
