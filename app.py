@@ -73,7 +73,7 @@ with st.form(key='innovation_form'):
     # Input fields
     innovation_name = st.text_input("💡 Nombre de la Idea", max_chars=50)
     problem_statement = st.text_area("🚧 Descripción del Problema", max_chars=500, help="Describe your problem statement. Address only one problem at once.")
-    need_for_innovation = st.text_area("🔥¿Cúal es la necesidad para esta innovación?", max_chars=200)
+    need_for_innovation = st.text_area("👩‍🚀¿A quiénes les afecta el problema?", max_chars=200)
     innovation_description = st.text_area("🏆 Describe la solución", max_chars=300)
     references = st.text_area("🔍 Referencias (links)", help="Provide URLs separated by newline")
             
@@ -97,7 +97,7 @@ if submit:
         doc.add_heading('Descripción del Problema:', level=2)
         doc.add_paragraph(refine_input(PROBLEM_STATEMENT_PROMPT['prompt'] + problem_statement, PROBLEM_STATEMENT_PROMPT['max_tokens'], GLOBAL_TEMPERATURE))
 
-        doc.add_heading('¿cúal es la necesidad de esta innovación?:', level=2)
+        doc.add_heading('¿A quiénes les afecta el problema?:', level=2)
         doc.add_paragraph(refine_input(NEED_FOR_INNOVATION_PROMPT['prompt'] + need_for_innovation, NEED_FOR_INNOVATION_PROMPT['max_tokens'], GLOBAL_TEMPERATURE))
         
         doc.add_heading('Descripción de la solución:', level=2)
