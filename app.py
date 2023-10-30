@@ -1,11 +1,19 @@
-#app.py
+# app.py
 import streamlit as st
 from docx import Document
 import requests
 from bs4 import BeautifulSoup
+import base64
 
 # Title
 st.title("Market Research for Innovation Ideas")
+
+# Helper functions for downloading
+def make_downloadable_link(file_path, file_name, download_name):
+    with open(file_path, "rb") as f:
+        bytes_data = f.read()
+        b64 = base64.b64encode(bytes_data).decode()
+        return f'<a href="data:application/octet-stream;base64,{b64}" download="{download_name}">{file_name}</a>'
 
 # Form submission
 with st.form(key='innovation_form'):
@@ -56,6 +64,7 @@ if submit:
     # Save the report
     doc.save("report.docx")
 
-    # Provide download link for the report
-    st.markdown("[Download the report](report.docx)")
+    # Generate a downloadable link and provide it
+    download_link = make_downloadable_link("report.docx", "Download the report", "report.docx")
+    st.markdown(download_link, unsafe_allow_html=True)
 
