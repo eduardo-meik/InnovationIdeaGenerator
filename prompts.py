@@ -15,7 +15,7 @@ INNOVATION_NAME_PROMPT = {
 }
 
 INNOVATION_DESCRIPTION_PROMPT = {
-    'prompt': "Summarize the description of this innovation in spanish: ",
+    'prompt': "Expand or Summarize the description of this innovation in spanish based on : ",
     'max_tokens': 150
 }
 
