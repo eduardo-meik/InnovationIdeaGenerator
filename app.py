@@ -1,7 +1,7 @@
-import openai
 import streamlit as st
 from docx import Document
 import base64
+from openai import OpenAI
 from prompts import PROBLEM_STATEMENT_PROMPT, NEED_FOR_INNOVATION_PROMPT, INNOVATION_NAME_PROMPT, INNOVATION_DESCRIPTION_PROMPT, GLOBAL_TEMPERATURE
 
 # Set the page config
@@ -29,15 +29,14 @@ custom_css = """
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # Load secrets
-api_key = st.secrets["general"]["openai_api_key"]
+api_key = st.secrets["general"]["OPENAI_API_KEY"]
 temperature = st.secrets.get("temperature", 0.9)
 model_name = st.secrets.get("fast_llm_model", "gpt-3.5-turbo")
 
-# Debugging line to check the model name
-#st.write(f"Using model: {model_name}")
+client = OpenAI(api_key=api_key)
 
 # Initialize OpenAI API
-openai.api_key = api_key
+#openai.api_key = api_key
 
 st.title("🚀 Generador de Ideas de Innovación")
 
@@ -50,7 +49,7 @@ def make_downloadable_link(file_path, file_name, download_name):
 def refine_input(input_text, max_tokens=150, temperature=0.8):
     try:
         # OpenAI Chat API call
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model_name,
             messages=[
                 {"role": "system", "content": "You are an Innovation Expert, helping to present an innovation idea."},
@@ -59,12 +58,12 @@ def refine_input(input_text, max_tokens=150, temperature=0.8):
             max_tokens=max_tokens,
             temperature=temperature
         )
-        return response.choices[0].message['content'].strip()
-    except openai.error.OpenAIError as e:
+        return response.choices[0].message.content.strip()
+    except Exception as e:
         st.warning(f"OpenAI API Error: {str(e)}")
         return input_text
     except Exception as e:
-        st.warning(f"Error refining input: {str(e)}")
+        st.warning(f"OpenAI API Error: {str(e)}")
         return input_text
 
 
